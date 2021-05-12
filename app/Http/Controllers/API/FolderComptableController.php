@@ -8,6 +8,7 @@ use App\Http\Resources\MvComptable as MvComptableResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\FolderResource;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -74,6 +75,7 @@ class FolderComptableController extends BaseController
     public function show($id)
     {
         $folder = FolderComptable::where('user_id',Auth::user()->c_id)->find($id);
+        $comptes = DB::table('comptes')->get();
 
         if (is_null($folder)) {
             return $this->sendError("folder not exist");
@@ -83,7 +85,7 @@ class FolderComptableController extends BaseController
         if ($mvs->count() === null ) {
             return $this->sendError("no results found");
         }
-        return response(['folder'=> $folder,'mvs'=>$mvs, 'message'=>'get data successfully']);
+        return response(['folder'=> $folder,'mvs'=>$mvs,'comptes'=>$comptes , 'message'=>'get data successfully']);
 
 
     }
